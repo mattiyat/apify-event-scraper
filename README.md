@@ -1,62 +1,105 @@
-## Bootstrap CheerioCrawler template
+````markdown
+# Local Events Aggregator Scraper
 
-This is a project skeleton to help you bootstrap `CheerioCrawler` [web scraping](https://apify.com/web-scraping) projects in JavaScript faster. It will always use the most up-to-date configuration and include all the common files. It's made for developers already familiar with [Apify SDK](https://docs.apify.com/sdk/js/) and [Crawlee](https://crawlee.dev/) libraries.
+This project is a local events aggregator scraper built using Apify's Crawlee framework. It collects event information from multiple sources (e.g., Meetup, Eventbrite, and a dummy LocalEvents site) and outputs structured event data in JSON format.
 
-If you're looking for examples or want to learn how to use Apify, Apify SDK, or Crawlee, check out the [other templates](https://apify.com/templates/categories/javascript).
+## Features
 
-## Resources
+-   **Multi-Source Scraping:** Aggregates events from multiple platforms.
+-   **Configurable Input:** Specify city, event types, date range, maximum items, and sources.
+-   **Pagination Handling:** Automatically follows "next page" links.
+-   **Modular Architecture:** Easily extendable to add more sources or enhance data extraction logic.
 
-- [Video tutorial](https://www.youtube.com/watch?v=yTRHomGg9uQ) on building a scraper using CheerioCrawler
-- [Written tutorial](https://docs.apify.com/academy/web-scraping-for-beginners/challenge) on building a scraper using CheerioCrawler
-- How to [scrape a dynamic page](https://blog.apify.com/what-is-a-dynamic-page/) using Cheerio
-- [Video guide on getting data using Apify API](https://www.youtube.com/watch?v=ViYYDHSBAKM)
-- [Integration with GitHub,](https://apify.com/integrations) Zapier, Make, Google Drive and others
-- A short guide on how to create Actors using code templates
+## Prerequisites
 
-[web scraper template](https://www.youtube.com/watch?v=u-i-Korzf8w)
+-   [Node.js](https://nodejs.org/) (v14 or higher recommended)
+-   NPM (comes with Node.js)
+-   [Apify SDK](https://docs.apify.com/)
+-   [Crawlee](https://docs.apify.com/crawlee)
 
+## Installation
 
+1. **Clone the repository:**
 
+    ```bash
+    git clone https://github.com/your-username/local-events-scraper.git
+    ```
+````
 
-## Getting started
+2. **Navigate into the project directory:**
 
-For complete information [see this article](https://docs.apify.com/platform/actors/development#build-actor-locally). To run the actor use the following command:
+    ```bash
+    cd local-events-scraper
+    ```
 
-```bash
-apify run
+3. **Install dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+## Configuration
+
+The scraper accepts a JSON input for configuration. An example configuration is shown below:
+
+```json
+{
+    "city": "San Francisco",
+    "eventTypes": ["music", "tech"],
+    "startDate": "2025-01-01",
+    "endDate": "2025-12-31",
+    "maxItems": 100,
+    "sources": ["Meetup", "Eventbrite", "LocalEvents"]
+}
 ```
 
-## Deploy to Apify
+-   **city:** Target city for events.
+-   **eventTypes:** Array of event categories for filtering.
+-   **startDate & endDate:** Date range for events (currently not applied pre-scrape).
+-   **maxItems:** Maximum number of events to scrape.
+-   **sources:** List of platforms to scrape from.
 
-### Connect Git repository to Apify
+## Usage
 
-If you've created a Git repository for the project, you can easily connect to Apify:
+To run the scraper, simply execute:
 
-1. Go to [Actor creation page](https://console.apify.com/actors/new)
-2. Click on **Link Git Repository** button
+```bash
+node main.js
+```
 
-### Push project on your local machine to Apify
+The crawler will process the start URLs based on the provided configuration. When the crawl completes, the scraped event data will be saved to the default dataset (or can be further processed as needed).
 
-You can also deploy the project on your local machine to Apify without the need for the Git repository.
+## Code Structure
 
-1. Log in to Apify. You will need to provide your [Apify API Token](https://console.apify.com/account/integrations) to complete this action.
+-   **main.js:**
 
-    ```bash
-    apify login
-    ```
+    -   Initializes the actor and reads input configuration.
+    -   Sets up the proxy configuration.
+    -   Constructs start URLs based on selected sources.
+    -   Configures and starts the CheerioCrawler with our routing logic.
 
-2. Deploy your Actor. This command will deploy and build the Actor on the Apify Platform. You can find your newly created Actor under [Actors -> My Actors](https://console.apify.com/actors?tab=my).
+-   **routes.js:**
+    -   Defines the router with default handlers for event listing pages.
+    -   Implements source-specific data extraction and pagination handling.
+    -   Collects all scraped event objects for output.
 
-    ```bash
-    apify push
-    ```
+## Customization
 
-## Documentation reference
+-   **Date Filtering:**  
+    Currently, `startDate` and `endDate` are part of the input schema but not used. You can implement pre-scrape filtering (by modifying the URLs) or post-scrape filtering within the router handlers.
+-   **Selectors:**  
+    Adjust CSS selectors in `routes.js` to match changes in the target websites.
+-   **Additional Sources:**  
+    Extend the router and main file logic to add more event sources as needed.
 
-To learn more about Apify and Actors, take a look at the following resources:
+## License
 
-- [Apify SDK for JavaScript documentation](https://docs.apify.com/sdk/js)
-- [Apify SDK for Python documentation](https://docs.apify.com/sdk/python)
-- [Apify Platform documentation](https://docs.apify.com/platform)
-- [Join our developer community on Discord](https://discord.com/invite/jyEM2PRvMU)
-# apify-event-scraper
+This project is licensed under the [MIT License](LICENSE).
+
+## Contributing
+
+Contributions, suggestions, and improvements are welcome! Please feel free to open issues or pull requests.
+
+```
+
+```
